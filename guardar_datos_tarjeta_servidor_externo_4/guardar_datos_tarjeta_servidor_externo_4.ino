@@ -12,40 +12,19 @@ bool bandera;
 
 const char* ssid = "MARISAJABE";
 const char* password = "31126263"; 
-const char* host = "192.168.0.31";
+const char* host = "192.168.0.16";
 //const char* host = "subirdatosmodulowifi.epizy.com";
 //const char* host = "185.27.134.142";
 
-MFRC522 lector1(SS_PIN, RST_PIN); ///Creamos el objeto para el RC522 al cual llamamos Lector1
+//Creamos el objeto para el RC522 al cual llamamos Lector1
+MFRC522 lector1(SS_PIN, RST_PIN); 
 
 //CREAMOS LA FUNCION QUE ENVIARÁ LOS DATOS A LA BASE DE DATOS LOCAL O EXTERNA
-
 bool enviarDatos(bool bandera, String codigotarjeta)
 {
   if(bandera == true)
   {
-    //=========CODIGO CONEXION WIFI================
-    Serial.println();
-    Serial.println();
-    Serial.print("Connecting to ");
-    Serial.println(ssid);
-  
-    WiFi.begin(ssid, password);
-  
-    while (WiFi.status() != WL_CONNECTED)
-    {
-      delay(500);
-      Serial.print(".");
-    }
-  
-    Serial.println("");
-    Serial.println("WiFi connected");
-    Serial.println("IP address: ");
-    Serial.println(WiFi.localIP()); 
-  
-    //===========FIN CODIGO CONEXION WIFI=============  
-
-    //=============CONTINUACION CODIGO CONEXION WIFI==========================
+     //=============CODIGO CONEXION AL HOST==========================
 
      Serial.print("connecting to ");
      Serial.println(host);
@@ -58,10 +37,14 @@ bool enviarDatos(bool bandera, String codigotarjeta)
         Serial.println("connection failed");
         //return;
      }
-
-
-   // http://subirdatosmodulowifi.epizy.com/guardar.php?codigotarjeta=245+217+149+187&chipid=553355
-
+     else
+     {
+        Serial.println("successful conection");
+     }
+     
+     //====================== FIN DE CODIGO DE CONEXION AL HOST ==========
+    
+      // http://subirdatosmodulowifi.epizy.com/guardar.php?codigotarjeta=245+217+149+187&chipid=553355
     
      // We now create a URL for the request
      String url = "prueba_arduino_mysql_local/guardar.php";
@@ -75,15 +58,10 @@ bool enviarDatos(bool bandera, String codigotarjeta)
      // This will send the request to the server
      client.print(String("GET /") + url + key + dato1 + codigotarjeta + dato2 + chipid + " HTTP/1.1\r\n" + "Host: " + host + "\r\n" + "Connection: close\r\n\r\n");
 
-
-    //ACA REINICIAMOS LA VARIABLE PARA QUE SE ALMACENE CON EL NUEVO VALOR DE LA NUEVA TARJETA
-    //codigotarjeta = ;
-
     //EN ESTA PARTE SE IMPRIME LA URL EN ORDEN PARA SABER QUE ES LO QUE SE ENVIA CUANDO SE REALIZA LA PETICION GET
     /*Serial.print( url + key + dato1 + codigotarjeta + dato2 + chipid + " HTTP/1.1\r\n" +
                "Host: " + host + "\r\n" +
                "Connection: close\r\n\r\n");*/
-
                
   unsigned long timeout = millis();
   while (client.available() == 0)
@@ -113,13 +91,42 @@ bool enviarDatos(bool bandera, String codigotarjeta)
   Serial.println(codigotarjeta);
 
   //reiniciamos la variable que alamacena el serial de la tarjeta
-  reiniciarVariable();
+  //reiniciarVariable();
   
 }
 
-void reiniciarVariable()
+
+//DECLARAMOS LA FUNCION QUE REINICIA LA VARIABLE QUE ALMACENA EL SERIAL DEL CARNE
+/*void reiniciarVariable()
 {
   codigotarjeta = " ";
+}*/
+
+
+//CREAMOS LA FUNCION QUE CONECTARA AL WIFI DE LA COMPUTADORA
+void conectarWifi()
+{
+  //=========CODIGO CONEXION WIFI================
+    Serial.println();
+    Serial.println();
+    Serial.print("Connecting to ");
+    Serial.println(ssid);
+  
+    WiFi.begin(ssid, password);
+  
+    while (WiFi.status() != WL_CONNECTED)
+    {
+      delay(500);
+      Serial.print(".");
+    }
+  
+    Serial.println("");
+    Serial.println("WiFi connected");
+    Serial.println("IP address: ");
+    Serial.println(WiFi.localIP()); 
+  
+    //===========FIN CODIGO CONEXION WIFI=============  
+
 }
 
 void setup()
@@ -136,6 +143,10 @@ void setup()
   chipid = String(ESP.getChipId());
   Serial.println(chipid);
   //==========FIN CODIGO MODULO WIFI=======================
+
+
+  //SE HACE EL LLAMADO A LA FUNCION QUE CONECTA EL WIFI
+  conectarWifi();
 }
 
 void loop()
@@ -143,7 +154,7 @@ void loop()
   // put your main code here, to run repeatedly:
   if ( lector1.PICC_IsNewCardPresent())   // Revisamos si hay nuevas tarjetas  presentes.
         { 
-            if ( lector1.PICC_ReadCardSerial())  //revisamos si hay nuevas tarjetas presentes
+            if ( lector1.PICC_ReadCardSerial())  //LEEMOS EL SERIAL DE LA TARJETA
             {
                   //Serial.print("El ID de tu tarjeta es: \n"); // Imprimimos el ID de la tarjeta
                   for (byte i = 0; i < lector1.uid.size; i++)
@@ -173,5 +184,9 @@ void loop()
             bandera = true;
             enviarDatos(bandera, codigotarjeta);
             
+      }
+      else
+      {
+        //aca se puede enviar un mensaje de que no hay tarjetas presentes, que se pase una por el sensor
       }
 }
