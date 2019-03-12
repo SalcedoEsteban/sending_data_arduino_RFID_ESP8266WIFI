@@ -6,13 +6,13 @@
 #define SS_PIN  15   //Pin 15 para el SS (SDA) del RC522
 
 //String codigotarjeta = "";
-String codigotarjeta = "";
+String codigotarjeta;
 String chipid = "";
 bool bandera;
 
 const char* ssid = "MARISAJABE";
 const char* password = "31126263"; 
-const char* host = "192.168.0.16";
+const char* host = "192.168.0.35";
 //const char* host = "subirdatosmodulowifi.epizy.com";
 //const char* host = "185.27.134.142";
 
@@ -22,8 +22,8 @@ MFRC522 lector1(SS_PIN, RST_PIN);
 //CREAMOS LA FUNCION QUE ENVIARÁ LOS DATOS A LA BASE DE DATOS LOCAL O EXTERNA
 bool enviarDatos(bool bandera, String codigotarjeta)
 {
-  if(bandera == true)
-  {
+    if(bandera == true)
+    {
      //=============CODIGO CONEXION AL HOST==========================
 
      Serial.print("connecting to ");
@@ -85,22 +85,31 @@ bool enviarDatos(bool bandera, String codigotarjeta)
   Serial.println("closing connection");
   }
 
-  return true;
+  
 
   Serial.println("el codigo de la tarjeta almacenado en la variable global es: ");
   Serial.println(codigotarjeta);
 
   //reiniciamos la variable que alamacena el serial de la tarjeta
-  //reiniciarVariable();
+  reiniciarVariable();
+
+
+  Serial.println("el codigo de la tarjeta despues de reiniciarse es: ");
+  Serial.println(codigotarjeta);
+  
+  return true;
+
+
+
   
 }
 
 
 //DECLARAMOS LA FUNCION QUE REINICIA LA VARIABLE QUE ALMACENA EL SERIAL DEL CARNE
-/*void reiniciarVariable()
+void reiniciarVariable()
 {
-  codigotarjeta = " ";
-}*/
+  codigotarjeta = "";
+}
 
 
 //CREAMOS LA FUNCION QUE CONECTARA AL WIFI DE LA COMPUTADORA
@@ -159,10 +168,10 @@ void loop()
                   //Serial.print("El ID de tu tarjeta es: \n"); // Imprimimos el ID de la tarjeta
                   for (byte i = 0; i < lector1.uid.size; i++)
                   {
-                          Serial.print(lector1.uid.uidByte[i] < 0x10 ? " 0" : " ");
-                          Serial.print(lector1.uid.uidByte[i], DEC);
+                          //Serial.print(lector1.uid.uidByte[i] < 0x10 ? " 0" : " ");
+                          //Serial.print(lector1.uid.uidByte[i], DEC);
                           //codigotarjeta = codigotarjeta + lector1.uid.uidByte[i]+ " ";
-                          codigotarjeta = codigotarjeta + lector1.uid.uidByte[i];    
+                          codigotarjeta = codigotarjeta + lector1.uid.uidByte[i], DEC;    
                   }
                   Serial.println(" ");
 
