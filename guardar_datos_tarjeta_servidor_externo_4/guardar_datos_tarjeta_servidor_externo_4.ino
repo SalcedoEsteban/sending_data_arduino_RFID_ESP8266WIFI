@@ -12,7 +12,7 @@ bool bandera;
 
 const char* ssid = "MARISAJABE";
 const char* password = "31126263"; 
-const char* host = "192.168.0.35";
+const char* host = "192.168.0.16";
 //const char* host = "subirdatosmodulowifi.epizy.com";
 //const char* host = "185.27.134.142";
 
