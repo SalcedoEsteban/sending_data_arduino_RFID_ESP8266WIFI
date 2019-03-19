@@ -2,6 +2,7 @@
 #include <SPI.h>
 #include <MFRC522.h>
 
+
 #define RST_PIN  5    //Pin 5 para el reset del RC522
 #define SS_PIN  15   //Pin 15 para el SS (SDA) del RC522
 
@@ -63,16 +64,16 @@ bool enviarDatos(bool bandera, String codigotarjeta)
                "Host: " + host + "\r\n" +
                "Connection: close\r\n\r\n");*/
                
-  unsigned long timeout = millis();
-  while (client.available() == 0)
-  {
-    if (millis() - timeout > 5000)
+    unsigned long timeout = millis();
+    while (client.available() == 0)
     {
-      Serial.println(">>> Client Timeout !");
-      client.stop();
-      //return;
+      if (millis() - timeout > 5000)
+      {
+        Serial.println(">>> Client Timeout !");
+        client.stop();
+        //return;
+      }
     }
-  }
 
   // Read all the lines of the reply from server and print them to Serial
   while (client.available())
@@ -96,6 +97,8 @@ bool enviarDatos(bool bandera, String codigotarjeta)
 
   Serial.println("el codigo de la tarjeta despues de reiniciarse es: ");
   Serial.println(codigotarjeta);
+
+  Serial.printf("el tamano de la variable codigotarjeta es %d\n: ", sizeof(codigotarjeta));
   
   return true;
 
