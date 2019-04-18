@@ -10,8 +10,6 @@ MFRC522::MIFARE_Key key;
 
 //Init array that will store new NUID 
 byte nuidPICC[4];
-byte id_hex[4];
-//char id_dec[4];
 
 
 void setup()
@@ -103,7 +101,6 @@ void printHex(byte *buffer, byte bufferSize)
   {
     Serial.print(buffer[i] < 0x10 ? " 0" : " ");
     Serial.print(buffer[i], HEX);
-    id_hex[i] = buffer[i], HEX;
   }
 }
 
@@ -116,7 +113,6 @@ void printDec(byte *buffer, byte bufferSize)
   {
     Serial.print(buffer[i] < 0x10 ? " 0" : " ");
     Serial.print(buffer[i], DEC);
-    id_dec[i] = buffer[i], DEC;
   }
 }
 
@@ -125,12 +121,6 @@ void printDec(byte *buffer, byte bufferSize)
 //printValues();
 
 
-/**
- * function used to show in console the value of id_hex and id_dec
- */
-/*String printValues()
-{
-  
-}*/
+
 
 
