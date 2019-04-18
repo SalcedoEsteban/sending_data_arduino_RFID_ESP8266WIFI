@@ -10,8 +10,8 @@ MFRC522::MIFARE_Key key;
 
 //Init array that will store new NUID 
 byte nuidPICC[4];
-char id_hex[4];
-char id_dec[4];
+byte id_hex[4];
+//char id_dec[4];
 
 
 void setup()
@@ -87,10 +87,10 @@ void loop()
   rfid.PCD_StopCrypto1();
 
   //print the value of the variables
-  Serial.println("El valor de la variable id_hex es: ");
-  Serial.println(id_hex[]);
+  /*Serial.println("El valor de la variable id_hex es: ");
+  Serial.println(id_hex[4]);
   Serial.println("El valor de la variable id_dec es: ");
-  Serial.println(id_dec[]);
+  Serial.println(id_dec[4]);*/
 }
 
 
