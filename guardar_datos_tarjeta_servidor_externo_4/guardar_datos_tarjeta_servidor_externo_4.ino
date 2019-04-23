@@ -6,14 +6,14 @@
 #define RST_PIN  5    //Pin 5 para el reset del RC522
 #define SS_PIN  15   //Pin 15 para el SS (SDA) del RC522
 
-//String codigotarjeta = "";
 String codigotarjeta;
+//String codigotarjeta[4];
 String chipid = "";
 bool bandera;
 
 const char* ssid = "MARISAJABE";
 const char* password = "31126263"; 
-const char* host = "192.168.0.16";
+const char* host = "192.168.0.36";
 //const char* host = "subirdatosmodulowifi.epizy.com";
 //const char* host = "185.27.134.142";
 
@@ -88,29 +88,30 @@ bool enviarDatos(bool bandera, String codigotarjeta)
 
   
 
-  Serial.println("el codigo de la tarjeta almacenado en la variable global es: ");
-  Serial.println(codigotarjeta);
+  //Serial.println("el codigo de la tarjeta almacenado en la variable global es: ");
+  //Serial.println(codigotarjeta);
 
   //reiniciamos la variable que alamacena el serial de la tarjeta
   reiniciarVariable();
 
 
-  Serial.println("el codigo de la tarjeta despues de reiniciarse es: ");
-  Serial.println(codigotarjeta);
+  //Serial.println("el codigo de la tarjeta despues de reiniciarse es: ");
+  //Serial.println(codigotarjeta);
 
-  Serial.printf("el tamano de la variable codigotarjeta es %d\n: ", sizeof(codigotarjeta));
+  //Serial.printf("el tamano de la variable codigotarjeta es %d\n: ", sizeof(codigotarjeta));
   
   return true;
-
-
-
-  
 }
 
 
 //DECLARAMOS LA FUNCION QUE REINICIA LA VARIABLE QUE ALMACENA EL SERIAL DEL CARNE
 void reiniciarVariable()
 {
+  /*for (int i=0; i <4; i++)
+  {
+    codigotarjeta[i] = " ";
+  }*/
+
   codigotarjeta = "";
 }
 
@@ -174,15 +175,15 @@ void loop()
                           //Serial.print(lector1.uid.uidByte[i] < 0x10 ? " 0" : " ");
                           //Serial.print(lector1.uid.uidByte[i], DEC);
                           //codigotarjeta = codigotarjeta + lector1.uid.uidByte[i]+ " ";
-                          codigotarjeta = codigotarjeta + lector1.uid.uidByte[i], DEC;    
+                          codigotarjeta = codigotarjeta + lector1.uid.uidByte[i];
                   }
                   Serial.println(" ");
 
                   //Serial.println("el codigo de la tarjeta es: ");
                   //Serial.println(codigotarjeta);
 
-                  Serial.println("el codigo de la tarjeta almacenado en la variable global es: ");
-                  Serial.println(codigotarjeta);
+                  //Serial.println("el codigo de la tarjeta almacenado en la variable global es: ");
+                  //Serial.println(codigotarjeta);
                   //codigotarjeta = " ";
                   //Serial.println("despues de volver a reiniciar la variable, el codigo es: ");
                   //Serial.println(codigotarjeta);
