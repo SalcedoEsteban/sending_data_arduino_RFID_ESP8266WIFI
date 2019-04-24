@@ -1,7 +1,7 @@
 <?php
 	$servidor = "localhost";
-	$usuario = "root";
-	$password = "root123";
+	$usuario = "******";
+	$password = "*******";
 	$database = "arduino";
 
 	$conexion = new mysqli($servidor, $usuario, $password, $database);
