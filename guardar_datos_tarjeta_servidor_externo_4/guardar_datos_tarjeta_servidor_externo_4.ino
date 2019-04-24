@@ -11,9 +11,9 @@ String codigotarjeta;
 String chipid = "";
 bool bandera;
 
-const char* ssid = "MARISAJABE";
-const char* password = "31126263"; 
-const char* host = "192.168.0.36";
+const char* ssid = "********"; //aca va el nombre de la red wifi
+const char* password = "********"; //aca va el password de la red
+const char* host = "**********"; //acá va la IP del wifi
 //const char* host = "subirdatosmodulowifi.epizy.com";
 //const char* host = "185.27.134.142";
 
